@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/controllers/api/todo_controller.dart';
 import 'package:todo_app/screens/details_todo.dart';
 import 'package:todo_app/screens/register_page.dart';
+import 'package:todo_app/screens/search_result.dart';
 import 'package:todo_app/widgets/error_snackbar.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,7 +18,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
-
   // create todo
   String _title = '';
   String _body = '';
@@ -25,6 +25,11 @@ class _HomePageState extends State<HomePage> {
     http.Response response = await TodoController.createTodo(_title, _body);
     Map responseMap = jsonDecode(response.body);
     if (response.statusCode == 201) {
+      // refresh page after update
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (BuildContext context) => super.widget));
+
       const snackBar = SnackBar(
         content: Text('Created Successfully!'),
       );
@@ -55,9 +60,8 @@ class _HomePageState extends State<HomePage> {
     http.Response response = await TodoController.showTodo();
     if (response.statusCode == 200) {
       Map responseMap = jsonDecode(response.body);
+      return responseMap;
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       throw Exception('Failed to load data');
     }
   }
@@ -78,6 +82,11 @@ class _HomePageState extends State<HomePage> {
     http.Response response = await TodoController.updateTodo(id, title, body);
     Map responseMap = jsonDecode(response.body);
     if (response.statusCode == 200) {
+      // refresh page after update
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (BuildContext context) => super.widget));
+      // show successfull message
       const snackBar = SnackBar(
         content: Text('Update data successfully!'),
       );
@@ -97,6 +106,11 @@ class _HomePageState extends State<HomePage> {
   deleteTodoPressed() async {
     http.Response response = await TodoController.deleteTodo(delDataId);
     if (response.statusCode == 204) {
+      // refresh page after update
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (BuildContext context) => super.widget));
+
       const snackBar = SnackBar(
         content: Text('Delete data successfully!'),
       );
@@ -110,175 +124,298 @@ class _HomePageState extends State<HomePage> {
   }
 
   // search data
-  String srchData = "d";
+  String srchData = "";
   searchTodoPressed() async {
     http.Response response = await TodoController.searchTodo(srchData);
-    Map responseMap = jsonDecode(response.body);
-    Route route =
-        MaterialPageRoute(builder: (context) => DetailsTodo(data: responseMap));
-    // ignore: use_build_context_synchronously
-    Navigator.push(context, route);
     if (response.statusCode == 200) {
-      const snackBar = SnackBar(
-        content: Text('Search result!'),
-      );
+      Map responseMap = jsonDecode(response.body);
+      Route route = MaterialPageRoute(
+          builder: (context) => SearchResultPage(data: responseMap));
       // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.push(context, route);
     } else {
       // ignore: use_build_context_synchronously
-      errorSnackBar(context, 'Failed to delete!');
+      errorSnackBar(context, 'Data not found!');
     }
     return response;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Center(
-              child: Text('Home Screen'),
-            ),
-            TextField(
-              decoration: const InputDecoration(
-                hintText: 'Title',
-              ),
-              onChanged: (value) {
-                _title = value;
-              },
-              controller: _titleController,
-            ),
-            TextField(
-              decoration: const InputDecoration(
-                hintText: 'Body',
-              ),
-              onChanged: (value) {
-                _body = value;
-              },
-              controller: _bodyController,
-            ),
-            const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () => createTodoPressed(),
-              child: const Text('Create Todo'),
-            ),
-            const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () => logOut(),
-              child: const Text('Logout'),
-            ),
-            const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () => showDialog(
-                  context: context,
-                  builder: (context) => SimpleDialog(
-                        children: [
-                          TextField(
-                            onChanged: (value) {
-                              srchData = value;
-                            },
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              searchTodoPressed();
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Search'),
-                          )
-                        ],
-                      )),
-              child: const Text('Search'),
-            ),
-            const SizedBox(height: 40),
-            FutureBuilder(
-              future: futureData,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  // print(snapshot.data.toString());
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!['length'],
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        leading: CircleAvatar(
-                            child: Text(
-                                snapshot.data!['data'][index]['title'][0])),
-                        title: Text(snapshot.data!['data'][index]['title']),
-                        onTap: () {
-                          Route route = MaterialPageRoute(
-                              builder: (context) => DetailsTodo(
-                                  data: snapshot.data!['data'][index]));
-                          Navigator.push(context, route);
-                        },
-                        trailing: SizedBox(
-                            width: 80,
-                            child: Row(
+    return SafeArea(
+      child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Todo - Home'),
+          ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () => {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => SimpleDialog(
+                          children: [
+                            const Text('Create Todo'),
+                            TextField(
+                              decoration: const InputDecoration(
+                                hintText: 'Title',
+                              ),
+                              onChanged: (value) {
+                                _title = value;
+                              },
+                              controller: _titleController,
+                            ),
+                            TextField(
+                              decoration: const InputDecoration(
+                                hintText: 'Body',
+                              ),
+                              onChanged: (value) {
+                                _body = value;
+                              },
+                              controller: _bodyController,
+                            ),
+                            ElevatedButton(
+                                onPressed: () => {
+                                      createTodoPressed(),
+                                    },
+                                child: const Text('Create'))
+                          ],
+                        ),
+                      )
+                    },
+                    child: const Text('Create Todo'),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () => logOut(),
+                    child: const Text('Logout'),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => SimpleDialog(
                               children: [
-                                IconButton(
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => SimpleDialog(
-                                              children: [
-                                                TextField(
-                                                  onChanged: (value) {
-                                                    title = value;
-                                                  },
-                                                ),
-                                                TextField(
-                                                  onChanged: (value) {
-                                                    body = value;
-                                                  },
-                                                ),
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      id = snapshot.data['data']
-                                                          [index]['id'];
-                                                      title = title;
-                                                      body = body;
-                                                    });
-                                                    updateTodoPressed();
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text('Update'),
-                                                )
-                                              ],
-                                            ));
-                                  },
-                                  icon: const Icon(Icons.edit),
+                                const Center(
+                                  child: Text(
+                                    'Search Data',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
-                                IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      delDataId = snapshot.data['data'][index]
-                                              ['id']
-                                          .toString();
-                                    });
-                                    deleteTodoPressed();
-                                  },
-                                  icon: const Icon(Icons.delete),
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: TextField(
+                                    autofocus: true,
+                                    onChanged: (value) {
+                                      srchData = value;
+                                    },
+                                  ),
                                 ),
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      searchTodoPressed();
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text(
+                                      'Search',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                )
                               ],
                             )),
-                      );
+                    child: const Text('Search'),
+                  ),
+                  const SizedBox(height: 10),
+                  FutureBuilder(
+                    future: futureData,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data['data'].length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ListTile(
+                              leading: CircleAvatar(
+                                  child: Text(snapshot.data!['data'][index]
+                                      ['title'][0])),
+                              title:
+                                  Text(snapshot.data!['data'][index]['title']),
+                              onTap: () {
+                                Route route = MaterialPageRoute(
+                                    builder: (context) => DetailsTodo(
+                                        data: snapshot.data!['data'][index]));
+                                Navigator.push(context, route);
+                              },
+                              trailing: SizedBox(
+                                  width: 80,
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          // passing data when press edit button
+                                          title = snapshot.data!['data'][index]
+                                              ['title'];
+                                          body = snapshot.data!['data'][index]
+                                              ['body'];
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  SimpleDialog(
+                                                    children: [
+                                                      const SizedBox(height: 8),
+                                                      const Center(
+                                                          child: Text(
+                                                        'Edit Todo',
+                                                        style: TextStyle(
+                                                            fontSize: 18,
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      )),
+                                                      const SizedBox(height: 5),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(12.0),
+                                                        child: TextField(
+                                                          controller: TextEditingController(
+                                                              text: snapshot.data![
+                                                                          'data']
+                                                                      [index]
+                                                                  ['title']),
+                                                          decoration:
+                                                              const InputDecoration(
+                                                                  labelText:
+                                                                      'Title'),
+                                                          onChanged: (value) {
+                                                            title = value;
+                                                          },
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(12.0),
+                                                        child: TextField(
+                                                          controller: TextEditingController(
+                                                              text: snapshot
+                                                                          .data![
+                                                                      'data'][
+                                                                  index]['body']),
+                                                          decoration:
+                                                              const InputDecoration(
+                                                                  labelText:
+                                                                      'Body'),
+                                                          onChanged: (value) {
+                                                            body = value;
+                                                          },
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 8),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(12.0),
+                                                        child: ElevatedButton(
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              id = snapshot
+                                                                          .data[
+                                                                      'data']
+                                                                  [index]['id'];
+                                                              title = title;
+                                                              body = body;
+                                                            });
+                                                            updateTodoPressed();
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: const Text(
+                                                            'Update',
+                                                            style: TextStyle(
+                                                                fontSize: 12),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ));
+                                        },
+                                        icon: const Icon(Icons.edit),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: const Text("Confirm"),
+                                                  content:
+                                                      const SingleChildScrollView(
+                                                    child: ListBody(
+                                                      children: <Widget>[
+                                                        Text("Are you sure?")
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  actions: <Widget>[
+                                                    ElevatedButton(
+                                                      child: const Text("No"),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                    ElevatedButton(
+                                                      child: const Text("Yes"),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          delDataId = snapshot
+                                                              .data['data']
+                                                                  [index]['id']
+                                                              .toString();
+                                                        });
+                                                        deleteTodoPressed();
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                        },
+                                        icon: const Icon(Icons.delete),
+                                      ),
+                                    ],
+                                  )),
+                            );
+                          },
+                        );
+                      } else if (snapshot.hasError) {
+                        // ignore: avoid_print
+                        print('data not found!');
+                        return Text('${snapshot.error}');
+                      }
+                      // By default, show a loading spinner.
+                      return const CircularProgressIndicator();
                     },
-                  );
-                } else if (snapshot.hasError) {
-                  // ignore: avoid_print
-                  print('data not found!');
-                  return Text('${snapshot.error}');
-                }
-                // By default, show a loading spinner.
-                return const CircularProgressIndicator();
-              },
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-    ));
+          )),
+    );
   }
 }

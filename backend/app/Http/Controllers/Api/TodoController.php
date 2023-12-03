@@ -58,14 +58,6 @@ class TodoController extends Controller
         $todo->title = $title;
         $todo->body = $body;
 
-        // $validatedData = Validator::make($request->all(), [
-        //     'title' => 'required',
-        //     'body' => 'required',
-        // ]);
-        // if ($validatedData->fails()) {
-        //     return response()->json(['errors' => $validatedData->errors()]);
-        // }
-
         $todo->update();
 
         return response()->json([
@@ -99,7 +91,7 @@ class TodoController extends Controller
     {
         $srch_data = $request->srch_data;
 
-        $search_result = Todo::where('title', 'like', '%' . $srch_data . '%')->get();
+        $search_result = Todo::where('title', 'like', '%' . $srch_data . '%')->orWhere('body', 'like', '%' . $srch_data . '%')->get();
 
         return response()->json([
             'data' =>  $search_result,

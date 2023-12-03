@@ -11,23 +11,14 @@ class DetailsTodo extends StatelessWidget {
         title: const Text('Todo'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: data['data'].length,
-          itemBuilder: (BuildContext context, int index) {
-            return Column(
-              children: [
-                ListTile(
-                  leading: CircleAvatar(
-                      child: Text(data['data'][index]['title'][0])),
-                  title: Text(data['data'][index]['body']),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Text(data['id'].toString()),
+              Text(data['title'].toString()),
+              Text(data['body'].toString())
+            ],
+          )),
     );
   }
 }

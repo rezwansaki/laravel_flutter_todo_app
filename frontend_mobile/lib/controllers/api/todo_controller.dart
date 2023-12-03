@@ -22,8 +22,15 @@ class TodoController {
 
   // http://127.0.0.1:8000/api/showTodo - get request to read data without authenticated
   static Future<http.Response> showTodo() async {
+    final prefs = await SharedPreferences.getInstance();
+    const key = 'token';
+    final value = prefs.get(key) ?? 0; //value will store the token
+
     var url = Uri.parse('$API_BASE_URL/showTodo');
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(
+      url,
+      headers: {'Accept': 'application/json', 'Authorization': 'Bearer $value'},
+    );
     return response;
   }
 
