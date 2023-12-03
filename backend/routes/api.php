@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\TodoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,15 +20,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/register', [ApiController::class, 'Register']);
-Route::post('/login', [ApiController::class, 'login']);
-Route::post('/logout', [ApiController::class, 'logout'])->middleware('auth:sanctum');
-Route::post('/createToDo', [ApiController::class, 'createToDo'])->middleware('auth:sanctum');
-Route::get('/showTodo', [ApiController::class, 'showTodo'])->middleware('auth:sanctum');
-Route::put('/updateTodo/{id}', [ApiController::class, 'updateTodo'])->middleware('auth:sanctum');
-Route::delete('deleteTodo/{id}', [ApiController::class, 'deleteTodo'])->middleware('auth:sanctum');
-Route::get('/showSingleTodo/{id}', [ApiController::class, 'showSingleTodo'])->middleware('auth:sanctum');
-Route::get('/searchTodo', [ApiController::class, 'searchTodo'])->middleware('auth:sanctum');
+Route::post('/register', [AuthController::class, 'Register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/createToDo', [TodoController::class, 'createToDo'])->middleware('auth:sanctum');
+Route::get('/showTodo', [TodoController::class, 'showTodo'])->middleware('auth:sanctum');
+Route::put('/updateTodo/{id}', [TodoController::class, 'updateTodo'])->middleware('auth:sanctum');
+Route::delete('deleteTodo/{id}', [TodoController::class, 'deleteTodo'])->middleware('auth:sanctum');
+Route::get('/showSingleTodo/{id}', [TodoController::class, 'showSingleTodo'])->middleware('auth:sanctum');
+Route::get('/searchTodo', [TodoController::class, 'searchTodo'])->middleware('auth:sanctum');
 
 // REST API List: 
 // POST API for registration 

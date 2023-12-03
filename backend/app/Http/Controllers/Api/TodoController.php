@@ -80,7 +80,7 @@ class TodoController extends Controller
         $todo = Todo::find($id);
         $todo->delete();
         return response()->json([
-            'todo' =>  $todo,
+            'data' =>  $todo,
             'message' => 'Delete Todo Successfully',
         ], 204);
     }

@@ -1,4 +1,4 @@
-# Laravel_Flutter_Todo_App - Flutter 3 Project with Laravel 10 Api
+# Laravel_Flutter_Todo_App - Flutter 3 Project
 
 ![Alt text](screenshot.jpg "Laravel_Flutter_Todo_App - Flutter")
 
@@ -16,7 +16,7 @@ I developed REST API in Laravel 10 for authentication, crud and query and then h
     <li>6. php artisan migrate</li>
     <li>7. php artisan serve</li> 
     <li>8. Goto the 'frontend_mobile' folder in the terminal.</li>
-    <li>9. creating .env and .env.dev files in the 'frontend_mobile' folder and also change 'api_base_url' information from .env and.env.dev.</li>
+    <li>9. creating .env and .env.dev files in the 'frontend_mobile' folder and also change 'API_PROJECT_HOST' information from .env and.env.dev.</li>
     <li>10. flutter clean</li>
     <li>11. flutter pub get</li>
     <li>12. flutter run</li>
@@ -37,11 +37,11 @@ I developed REST API in Laravel 10 for authentication, crud and query and then h
 The work of the database must be done through migrate, but it cannot be directly modified by going to the database from database server.
 
 ### Extra Packages used:
-
+ 
 <ul>
   <li>1. flutter_screenutil: ^5.9.0 - for responsie app design.</li>
-  <li>2. flutter_dotenv - for global environment variables.</li>
-  <li>3. http: ^0.13.4 - for http requests to handle api request.</li>
+  <li>2. flutter_dotenv: ^5.1.0 - for global environment variables.</li>
+  <li>3. http: ^1.1.0 - for http requests to handle api request.</li>
   <li>4. shared_preferences: ^2.2.2 - for storing logn token in device.</li>
 </ul>
 
