@@ -32,9 +32,11 @@ class _HomePageState extends State<HomePage> {
 
       const snackBar = SnackBar(
         content: Text('Created Successfully!'),
+        duration: Duration(seconds: 1),
       );
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
       _titleController.clear();
       _bodyController.clear();
     } else {
@@ -142,111 +144,139 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Todo - Home'),
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: () => {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => SimpleDialog(
+    return MaterialApp(
+      title: 'Todo - Home',
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Todo - Home'),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.search),
+              tooltip: 'Search',
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => SimpleDialog(
                           children: [
-                            const Text('Create Todo'),
-                            TextField(
-                              decoration: const InputDecoration(
-                                hintText: 'Title',
+                            const Center(
+                              child: Text(
+                                'Search Data',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
                               ),
-                              onChanged: (value) {
-                                _title = value;
-                              },
-                              controller: _titleController,
                             ),
-                            TextField(
-                              decoration: const InputDecoration(
-                                hintText: 'Body',
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: TextField(
+                                autofocus: true,
+                                onChanged: (value) {
+                                  srchData = value;
+                                },
                               ),
-                              onChanged: (value) {
-                                _body = value;
-                              },
-                              controller: _bodyController,
                             ),
-                            ElevatedButton(
-                                onPressed: () => {
-                                      createTodoPressed(),
-                                    },
-                                child: const Text('Create'))
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  searchTodoPressed();
+                                  Navigator.pop(context);
+                                },
+                                child: const Text(
+                                  'Search',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            )
                           ],
-                        ),
-                      )
-                    },
-                    child: const Text('Create Todo'),
+                        ));
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.logout),
+              tooltip: 'Logout',
+              onPressed: () {
+                logOut();
+              },
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => SimpleDialog(
+                children: [
+                  const Center(
+                      child: Text(
+                    'Create Todo',
+                  )),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextField(
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        hintText: 'Title',
+                      ),
+                      onChanged: (value) {
+                        _title = value;
+                      },
+                      controller: _titleController,
+                    ),
                   ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () => logOut(),
-                    child: const Text('Logout'),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Body',
+                      ),
+                      onChanged: (value) {
+                        _body = value;
+                      },
+                      controller: _bodyController,
+                    ),
                   ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () => showDialog(
-                        context: context,
-                        builder: (context) => SimpleDialog(
-                              children: [
-                                const Center(
-                                  child: Text(
-                                    'Search Data',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: TextField(
-                                    autofocus: true,
-                                    onChanged: (value) {
-                                      srchData = value;
-                                    },
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      searchTodoPressed();
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text(
-                                      'Search',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )),
-                    child: const Text('Search'),
-                  ),
-                  const SizedBox(height: 10),
-                  FutureBuilder(
-                    future: futureData,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data['data'].length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return ListTile(
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: ElevatedButton(
+                        onPressed: () => {
+                              createTodoPressed(),
+                            },
+                        child: const Text('Create')),
+                  )
+                ],
+              ),
+            );
+          },
+          backgroundColor: Colors.blue,
+          child: const Icon(Icons.add),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                FutureBuilder(
+                  future: futureData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data['data'].length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            padding: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.black12,
+                              ),
+                            ),
+                            child: ListTile(
                               leading: CircleAvatar(
                                   child: Text(snapshot.data!['data'][index]
                                       ['title'][0])),
@@ -353,7 +383,10 @@ class _HomePageState extends State<HomePage> {
                                                     ],
                                                   ));
                                         },
-                                        icon: const Icon(Icons.edit),
+                                        icon: const Icon(
+                                          Icons.edit,
+                                          color: Colors.blue,
+                                        ),
                                       ),
                                       IconButton(
                                         onPressed: () {
@@ -396,26 +429,31 @@ class _HomePageState extends State<HomePage> {
                                                 );
                                               });
                                         },
-                                        icon: const Icon(Icons.delete),
+                                        icon: const Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
                                       ),
                                     ],
                                   )),
-                            );
-                          },
-                        );
-                      } else if (snapshot.hasError) {
-                        // ignore: avoid_print
-                        print('data not found!');
-                        return Text('${snapshot.error}');
-                      }
-                      // By default, show a loading spinner.
-                      return const CircularProgressIndicator();
-                    },
-                  ),
-                ],
-              ),
+                            ),
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      // ignore: avoid_print
+                      print('data not found!');
+                      return Text('${snapshot.error}');
+                    }
+                    // By default, show a loading spinner.
+                    return const CircularProgressIndicator();
+                  },
+                ),
+              ],
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -51,8 +51,6 @@ Minimum SDK Version: 21 (Android 5.0 or, Lollipop) and Target SDK Version: 34 (A
 
 ### Tested On:
 
-- Emulator: Nexus_5X_API_29
-- Real Device: Samsung Galaxy J7
 - Google Chrome
 
 ### Used Tools:

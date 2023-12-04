@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/screens/details_todo.dart';
 
 class SearchResultPage extends StatelessWidget {
   final Map data;
@@ -18,7 +19,12 @@ class SearchResultPage extends StatelessWidget {
               leading:
                   CircleAvatar(child: Text(data['data'][index]['title'][0])),
               title: Text(data['data'][index]['title']),
-              onTap: () {},
+              onTap: () {
+                Route route = MaterialPageRoute(
+                    builder: (context) =>
+                        DetailsTodo(data: data['data'][index]));
+                Navigator.push(context, route);
+              },
             );
           },
         ));

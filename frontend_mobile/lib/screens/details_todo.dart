@@ -8,15 +8,24 @@ class DetailsTodo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Todo'),
+        title: const Text('Todo - Details'),
       ),
       body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Text(data['id'].toString()),
-              Text(data['title'].toString()),
-              Text(data['body'].toString())
+              Text(
+                'Todo id: ${data['id']}',
+                style: const TextStyle(fontSize: 14),
+              ),
+              Text(
+                'Todo title: ${data['title']}',
+                style: const TextStyle(fontSize: 14),
+              ),
+              Text(
+                'Todo body: ${data['body']}',
+                style: const TextStyle(fontSize: 14),
+              ),
             ],
           )),
     );
