@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Todo;
 
+use function PHPUnit\Framework\isEmpty;
+
 class TodoController extends Controller
 {
     // Create Todo
@@ -39,10 +41,9 @@ class TodoController extends Controller
     // Show All Todo
     public function showTodo()
     {
-        $todo = Todo::all();
+        $todo = Todo::orderBy('id', 'desc')->get();
         return response()->json([
             'data' =>  $todo,
-            'length' => count($todo),
             'message' => 'Show All Data',
         ], 200);
     }
@@ -93,8 +94,15 @@ class TodoController extends Controller
 
         $search_result = Todo::where('title', 'like', '%' . $srch_data . '%')->orWhere('body', 'like', '%' . $srch_data . '%')->get();
 
-        return response()->json([
-            'data' =>  $search_result,
-        ], 200);
+        if ($search_result->isEmpty()) {
+            return response()->json([
+                'data' =>  $search_result,
+                'message' =>  'Data not found!',
+            ], 404);
+        } else {
+            return response()->json([
+                'data' =>  $search_result,
+            ], 200);
+        }
     }
 }

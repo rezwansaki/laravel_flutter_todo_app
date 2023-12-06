@@ -51,7 +51,7 @@ Minimum SDK Version: 21 (Android 5.0 or, Lollipop) and Target SDK Version: 34 (A
 
 ### Tested On:
 
-- Google Chrome
+- Emulator Pixel 2 API 29
 
 ### Used Tools:
 

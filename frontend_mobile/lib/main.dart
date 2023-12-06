@@ -30,31 +30,30 @@ class MyApp extends StatelessWidget {
         // Use builder only if you need to use library outside ScreenUtilInit context
         builder: (_, child) {
           return MaterialApp(
+            // to hide debug banner
+            debugShowCheckedModeBanner: false,
             title: 'Todo App',
             theme: ThemeData(
               primarySwatch: Colors.blue,
               textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
             ),
             home: FutureBuilder(
-                future: SharedPreferences.getInstance(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.hasError) {
-                    return const Text('Some error has Occurred');
-                  } else if (snapshot.hasData) {
-                    final token = snapshot.data!.getString('token');
-                    if (token != null) {
-                      return const HomePage();
-                    } else {
-                      return const RegisterPage();
-                    }
+              future: SharedPreferences.getInstance(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Text('Some error has Occurred');
+                } else if (snapshot.hasData) {
+                  final token = snapshot.data!.getString('token');
+                  if (token != null) {
+                    return const HomePage();
                   } else {
                     return const RegisterPage();
                   }
-                }),
+                } else {
+                  return const RegisterPage();
+                }
+              },
+            ),
           );
         },
         child: const HomePage());

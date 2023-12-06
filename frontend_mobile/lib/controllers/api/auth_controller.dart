@@ -33,6 +33,7 @@ class AuthController {
       headers: headers,
       body: body,
     );
+    // ignore: avoid_print
     print(response.body);
     return response;
   }

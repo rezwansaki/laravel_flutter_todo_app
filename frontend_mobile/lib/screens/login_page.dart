@@ -67,9 +67,11 @@ class _LoginPageState extends State<LoginPage> {
                 height: 20,
               ),
               TextField(
+                keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
                   hintText: 'Enter your email',
                 ),
+                style: const TextStyle(color: Colors.black),
                 onChanged: (value) {
                   _email = value;
                 },
@@ -82,6 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: const InputDecoration(
                   hintText: 'Enter your password',
                 ),
+                style: const TextStyle(color: Colors.black),
                 onChanged: (value) {
                   _password = value;
                 },
