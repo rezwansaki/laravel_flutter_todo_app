@@ -17,6 +17,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
+
   // create todo
   String _title = '';
   String _body = '';
@@ -33,8 +36,7 @@ class _HomePageState extends State<HomePage> {
         content: Text('Created Successfully!'),
         duration: Duration(seconds: 1),
       );
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
 
       _titleController.clear();
       _bodyController.clear();
@@ -100,16 +102,16 @@ class _HomePageState extends State<HomePage> {
   deleteTodoPressed() async {
     http.Response response = await TodoController.deleteTodo(delDataId);
     if (response.statusCode == 204) {
+      // snackbar doesn't show, because of refreshing the page
+      const snackBar = SnackBar(
+        content: Text('Created Successfully!'),
+        duration: Duration(seconds: 1),
+      );
+      scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
       // refresh page after update
       // ignore: use_build_context_synchronously
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (BuildContext context) => super.widget));
-
-      const snackBar = SnackBar(
-        content: Text('Delete data successfully!'),
-      );
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       _showMyDialog("Alert Message", "Failed to delete!");
     }
@@ -178,6 +180,7 @@ class _HomePageState extends State<HomePage> {
       debugShowCheckedModeBanner: false,
       title: 'Todo - Home',
       home: ScaffoldMessenger(
+        key: scaffoldMessengerKey,
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Todo - Home'),

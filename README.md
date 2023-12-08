@@ -1,6 +1,8 @@
 # Laravel_Flutter_Todo_App - Flutter 3 Project
 
-![Alt text](screenshot.jpg "Laravel_Flutter_Todo_App - Flutter")
+![Alt text](screenshot_1.jpg "Laravel_Flutter_Todo_App - Flutter")
+![Alt text](screenshot_2.jpg "Laravel_Flutter_Todo_App - Flutter")
+![Alt text](screenshot_3.jpg "Laravel_Flutter_Todo_App - Flutter")
 
 This is a practice project. A Flutter Todo App developed by using Api. 
 Backend: Laravel 10 and Frontend: Flutter 3.
