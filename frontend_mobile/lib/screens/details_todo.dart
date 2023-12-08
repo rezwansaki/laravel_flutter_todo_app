@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DetailsTodo extends StatelessWidget {
   final Map data;
@@ -21,20 +22,24 @@ class DetailsTodo extends StatelessWidget {
           title: const Text('Todo - Details'),
         ),
         body: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.h),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Todo id: ${data['id']}',
-                  style: const TextStyle(fontSize: 14),
+                Center(
+                  child: Text(
+                    'Todo id: ${data['id']}',
+                    style: TextStyle(fontSize: 15.sp),
+                  ),
                 ),
                 Text(
                   'Todo title: ${data['title']}',
-                  style: const TextStyle(fontSize: 14),
+                  style: TextStyle(fontSize: 14.sp),
                 ),
                 Text(
                   'Todo body: ${data['body']}',
-                  style: const TextStyle(fontSize: 14),
+                  style: TextStyle(fontSize: 14.sp),
                 ),
               ],
             )),

@@ -25,7 +25,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (emailValid) {
       http.Response response =
           await AuthController.register(_name, _email, _password);
-      Map responseMap = jsonDecode(response.body);
+      jsonDecode(response.body);
       //print(response.statusCode);
       if (response.statusCode == 201) {
         // ignore: use_build_context_synchronously

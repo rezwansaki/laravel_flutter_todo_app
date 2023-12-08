@@ -21,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
     if (_email.isNotEmpty && _password.isNotEmpty) {
       http.Response response = await AuthController.login(_email, _password);
       Map responseMap = jsonDecode(response.body);
+      // ignore: avoid_print
       print(response.body);
       // print(response.statusCode);
       if (response.statusCode == 200) {

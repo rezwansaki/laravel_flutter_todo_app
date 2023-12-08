@@ -507,9 +507,9 @@ class _HomePageState extends State<HomePage> {
                         // ignore: avoid_print
                         print('data not found!');
                         return Text('${snapshot.error}');
+                      } else {
+                        return const CircularProgressIndicator();
                       }
-                      // By default, show a loading spinner.
-                      return const CircularProgressIndicator();
                     },
                   ),
                 ],
