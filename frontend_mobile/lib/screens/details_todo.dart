@@ -22,7 +22,7 @@ class DetailsTodo extends StatelessWidget {
           title: const Text('Todo - Details'),
         ),
         body: Padding(
-            padding: EdgeInsets.all(8.h),
+            padding: EdgeInsets.all(8.w),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,

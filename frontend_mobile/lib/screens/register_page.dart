@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_app/controllers/api/auth_controller.dart';
 import 'package:todo_app/screens/login_page.dart';
@@ -84,21 +85,21 @@ class _RegisterPageState extends State<RegisterPage> {
           backgroundColor: Colors.black,
           centerTitle: true,
           elevation: 0,
-          title: const Text(
+          title: Text(
             'Registration',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 20.sp,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: EdgeInsets.symmetric(horizontal: 8.w),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: 20.sp,
                 ),
                 TextField(
                   decoration: const InputDecoration(
@@ -108,8 +109,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     _name = value;
                   },
                 ),
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: 30.h,
                 ),
                 TextField(
                   decoration: const InputDecoration(
@@ -119,8 +120,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     _email = value;
                   },
                 ),
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: 30.h,
                 ),
                 TextField(
                   obscureText: true,
@@ -131,15 +132,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     _password = value;
                   },
                 ),
-                const SizedBox(
-                  height: 40,
+                SizedBox(
+                  height: 40.h,
                 ),
                 ElevatedButton(
                   child: const Text('Create Account'),
                   onPressed: () => createAccountPressed(),
                 ),
-                const SizedBox(
-                  height: 40,
+                SizedBox(
+                  height: 40.h,
                 ),
                 GestureDetector(
                   onTap: () {

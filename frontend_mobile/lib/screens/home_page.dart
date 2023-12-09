@@ -6,6 +6,7 @@ import 'package:todo_app/controllers/api/todo_controller.dart';
 import 'package:todo_app/screens/details_todo.dart';
 import 'package:todo_app/screens/register_page.dart';
 import 'package:todo_app/screens/search_result.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -193,39 +194,39 @@ class _HomePageState extends State<HomePage> {
                       context: context,
                       builder: (context) => SimpleDialog(
                             children: [
-                              const Center(
+                              Center(
                                 child: Text(
                                   'Search Data',
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 18.sp,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.all(12.0),
+                                padding: EdgeInsets.all(12.w),
                                 child: TextField(
                                   autofocus: true,
                                   onChanged: (value) {
                                     srchData = value;
                                   },
-                                  style: const TextStyle(
-                                    fontSize: 18,
+                                  style: TextStyle(
+                                    fontSize: 18.sp,
                                     color: Colors.black,
                                   ),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.all(12.0),
+                                padding: EdgeInsets.all(12.w),
                                 child: ElevatedButton(
                                   onPressed: () {
                                     searchTodoPressed();
                                     Navigator.pop(context);
                                   },
-                                  child: const Text(
+                                  child: Text(
                                     'Search',
                                     style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 18.sp,
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -298,7 +299,7 @@ class _HomePageState extends State<HomePage> {
           ),
           body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -311,7 +312,7 @@ class _HomePageState extends State<HomePage> {
                           itemCount: snapshot.data['data'].length,
                           itemBuilder: (BuildContext context, int index) {
                             return Container(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: EdgeInsets.all(8.w),
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Colors.black12,
@@ -331,7 +332,7 @@ class _HomePageState extends State<HomePage> {
                                   Navigator.push(context, route);
                                 },
                                 trailing: SizedBox(
-                                    width: 80,
+                                    width: 80.w,
                                     child: Row(
                                       children: [
                                         Expanded(
@@ -427,11 +428,11 @@ class _HomePageState extends State<HomePage> {
                                                                 Navigator.pop(
                                                                     context);
                                                               },
-                                                              child: const Text(
+                                                              child: Text(
                                                                 'Update',
                                                                 style: TextStyle(
                                                                     fontSize:
-                                                                        12),
+                                                                        12.sp),
                                                               ),
                                                             ),
                                                           )

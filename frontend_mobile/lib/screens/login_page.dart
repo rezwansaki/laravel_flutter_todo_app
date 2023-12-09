@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/controllers/api/auth_controller.dart';
@@ -52,20 +53,20 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Colors.black,
           centerTitle: true,
           elevation: 0,
-          title: const Text(
+          title: Text(
             'Login',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 20.sp,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
             children: [
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: 20.h,
               ),
               TextField(
                 keyboardType: TextInputType.emailAddress,
@@ -77,8 +78,8 @@ class _LoginPageState extends State<LoginPage> {
                   _email = value;
                 },
               ),
-              const SizedBox(
-                height: 30,
+              SizedBox(
+                height: 30.h,
               ),
               TextField(
                 obscureText: true,
@@ -90,8 +91,8 @@ class _LoginPageState extends State<LoginPage> {
                   _password = value;
                 },
               ),
-              const SizedBox(
-                height: 30,
+              SizedBox(
+                height: 30.h,
               ),
               ElevatedButton(
                 child: const Text('Login'),
