@@ -63,12 +63,11 @@ Laravel v10.11.0 and Flutter 3.13.2.
 
 ### Project Version:
 
-version: 1.0.0 (01-Dec-2023) <br />
+version: 1.0.2 (09-Dec-2023) <br />
 <sub>(When I will make change something from 'laravel_flutter_todo_app' folder.)</sub>
 
 ### Flutter App Version:
-full project (repository) version: 1.0.1 (08-Dec-2023) <br />
-only apk version: 1.0.1+1 (08-Dec-2023) <br />
+only apk version: 1.0.2+2 (09-Dec-2023) <br />
 <sub>(When I will make change something only from 'frontend_mobile' folder. This information has been taken from 'pubspec.yaml' file of flutter project.)</sub>
 
 ### App size:
