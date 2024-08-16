@@ -12,7 +12,7 @@ I developed REST API in Laravel 10 for authentication, crud and query and then h
 <ul>
     <li>1. Creating a Database 'lf_todo_app' in your database server</li>
     <li>2. Goto the 'backend' folder in the terminal.</li>
-    <li>3. composer update</li>
+    <li>3. composer install (if composer.lock file exists, if not, run 'composer update' and create it)</li>
     <li>4. 'npm install' and then 'npm run dev'</li>
     <li>5. copy the file .env.example from 'backend' folder and rename into .env, then give information of database, server and create app key by 'php artisan key:gen' the save the file</li>
     <li>6. php artisan migrate</li>
